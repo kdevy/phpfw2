@@ -1,0 +1,7 @@
+vendor/
+composer.phar
+virtualhost.conf
+
+.vscode/
+.DS_Store
+.php-cs-fixer.cache
