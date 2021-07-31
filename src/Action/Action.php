@@ -18,7 +18,7 @@ abstract class Action implements ActionInterface
     /**
      * @var TemplateResponseFactory
      */
-    public TemplateResponseFactory $response_factory;
+    public TemplateResponseFactory $template_response_factory;
 
     /**
      * @var ServerRequestInterface
@@ -31,7 +31,7 @@ abstract class Action implements ActionInterface
     public function __construct(ServerRequestInterface $request)
     {
         $this->request = $request;
-        $this->response_factory = new TemplateResponseFactory($request);
+        $this->template_response_factory = new TemplateResponseFactory($request);
     }
 
     /**

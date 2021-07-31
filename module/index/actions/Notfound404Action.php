@@ -18,7 +18,7 @@ class Notfound404Action extends Action
      */
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->response_factory->setContexts($this->getContexts($request))->createResponse();
+        return $this->template_response_factory->setContexts($this->getContexts($request))->createResponse();
     }
 
     /**
