@@ -76,7 +76,7 @@ class App implements RequestHandlerInterface
      */
     public function run(?ServerRequestInterface $request = null, bool $is_silent = false): ResponseInterface
     {
-        Log::info(null, "-->Start running the application.");
+        \Framework\Log::info(null, "-->Start running the application.");
         $stime = microtime();
 
         if (!$request) {
@@ -110,7 +110,7 @@ class App implements RequestHandlerInterface
             $emitter->emit($response);
         }
 
-        Log::info(null, sprintf(
+        \Framework\Log::info(null, sprintf(
             "<-- Quit the application, MU = %s Kb, MPU = %s Kb, LAP = %.5f ms.",
             floor(memory_get_usage(true) / (1000)),
             floor(memory_get_peak_usage(true) / (1000)),
