@@ -35,16 +35,3 @@ define("STATUS_DIR", VAR_DIR . DS . "status");
 
 // application setting files directory.
 define("APP_DIR", PROJECT_DIR . DS . "app");
-
-/**
- * debug mode
- */
-define("DEBUG", true);
-
-define("DEFAULT_LOG_FILENAME", "default.log");
-
-if (DEBUG) {
-    define("LOG_LEVEL", Framework\Log::LOG_DEBUG);
-} else {
-    define("LOG_LEVEL", Framework\Log::LOG_INFO);
-}

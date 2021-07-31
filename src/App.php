@@ -55,6 +55,7 @@ class App implements RequestHandlerInterface
                 $callable = $this->callable_resolver->resolve($request);
                 return $callable();
             } catch (CreateActionError $e) {
+                \Framework\Log::debug(null, $e);
                 throw new HttpNotFound();
             }
         }
@@ -75,6 +76,9 @@ class App implements RequestHandlerInterface
      */
     public function run(?ServerRequestInterface $request = null, bool $is_silent = false): ResponseInterface
     {
+        Log::info(null, "-->Start running the application.");
+        $stime = microtime();
+
         if (!$request) {
             $request = ServerRequestCreatorFactory::create();
         }
@@ -91,6 +95,8 @@ class App implements RequestHandlerInterface
                 $callable = $this->callable_resolver->resolve($request);
                 $response = $callable();
             } catch (CreateActionError $e) {
+                \Framework\Log::debug(null, $e);
+
                 $error_html = "<h2>Not Found 404</h2>
                 <p><a href=\"/\">TOP</a></p>";
                 $psr17_factory = new Psr17Factory();
@@ -103,6 +109,13 @@ class App implements RequestHandlerInterface
             $emitter = new SapiEmitter();
             $emitter->emit($response);
         }
+
+        Log::info(null, sprintf(
+            "<-- Quit the application, MU = %s Kb, MPU = %s Kb, LAP = %.5f ms.",
+            floor(memory_get_usage(true) / (1000)),
+            floor(memory_get_peak_usage(true) / (1000)),
+            microtime() - $stime,
+        ));
 
         return $response;
     }

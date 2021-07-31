@@ -7,6 +7,7 @@
  */
 
 use Framework\App;
+use Framework\Log;
 use DI\ContainerBuilder;
 use Framework\CallableResolver;
 use Framework\CallableResolverInterface;
@@ -17,6 +18,11 @@ require_once "../vendor/autoload.php";
 $builder = new ContainerBuilder();
 $builder->addDefinitions('../app/config.php');
 $container = $builder->build();
+
+// set logging configures.
+if ($container->has("logging")) {
+    Log::configure($container->get("logging"));
+}
 
 // get middlewares, default empty.
 $middlewares = [];
