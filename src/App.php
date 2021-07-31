@@ -38,7 +38,7 @@ class App implements RequestHandlerInterface
     public function __construct(CallableResolverInterface $callable_resolver, array $middlewares = [])
     {
         $this->callable_resolver = $callable_resolver;
-        $this->middlewares = $this->middlewares;
+        $this->middlewares = $middlewares;
     }
 
     /**
@@ -77,7 +77,7 @@ class App implements RequestHandlerInterface
     public function run(?ServerRequestInterface $request = null, bool $is_silent = false): ResponseInterface
     {
         \Framework\Log::info(null, "-->Start running the application.");
-        $stime = microtime();
+        $stime = microtime(true);
 
         if (!$request) {
             $request = ServerRequestCreatorFactory::create();
@@ -89,7 +89,6 @@ class App implements RequestHandlerInterface
         } catch (HttpNotFound $e) {
             $request = $request->withUri(new Uri("/notfound404"));
             $request = $request->withAttribute("route", new Route($request));
-            $callable = $this->callable_resolver->resolve($request);
 
             try {
                 $callable = $this->callable_resolver->resolve($request);
@@ -114,7 +113,7 @@ class App implements RequestHandlerInterface
             "<-- Quit the application, MU = %s Kb, MPU = %s Kb, LAP = %.5f ms.",
             floor(memory_get_usage(true) / (1000)),
             floor(memory_get_peak_usage(true) / (1000)),
-            microtime() - $stime,
+            microtime(true) - $stime,
         ));
 
         return $response;

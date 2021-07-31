@@ -13,6 +13,7 @@ return [
     "middlewares" => function (ContainerInterface $container) {
         return [
             Framework\Middleware\PhpSettingsMiddleware::class,
+            Framework\Middleware\SessionMiddleware::class,
         ];
     },
     "session_save_path" => function (ContainerInterface $container) {

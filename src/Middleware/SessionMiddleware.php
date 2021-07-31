@@ -8,12 +8,14 @@
 
 namespace Framework\Middleware;
 
+use Framework\SessionHelper;
+use Framework\User;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class PhpSettingsMiddleware implements MiddlewareInterface
+class SessionMiddleware implements MiddlewareInterface
 {
     /**
      * @param ServerRequestInterface $request
@@ -22,7 +24,15 @@ class PhpSettingsMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        date_default_timezone_set("Asia/Tokyo");
+        session_start();
+
+        // session helper
+        $session = new SessionHelper();
+        // user
+        $user = new User();
+
+        $session->set("user", $user);
+        $request = $request->withAttribute("session", $session);
 
         return $handler->handle($request);
     }
