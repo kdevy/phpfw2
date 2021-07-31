@@ -54,6 +54,11 @@ abstract class Action implements ActionInterface
      */
     public function getContexts(ServerRequestInterface $request): array
     {
-        return [];
+        $route = $request->getAttribute("route");
+        return [
+            "ROUTE_MODULE" => $route->getModuleName(),
+            "ROUTE_ACTION" => $route->getActionName(),
+            "ROUTE_PATH" => $route->getPathName(),
+        ];
     }
 }
