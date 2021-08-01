@@ -1,14 +1,14 @@
 <?php
 
-use Framework\Action\Action;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-
 /**
  * Kdevy framework - My original second php framework.
  *
  * Copyright © 2021 kdevy. All Rights Reserved.
  */
+
+use Framework\Action\Action;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class IndexAction extends Action
 {
