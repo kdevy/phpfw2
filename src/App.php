@@ -11,12 +11,12 @@ namespace Framework;
 use Framework\Exception\CreateActionError;
 use Framework\Exception\FrameworkException;
 use Framework\Exception\HttpNotFound;
+use Framework\ServerRequestCreatorFactory;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
-use Framework\ServerRequestCreatorFactory;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7\Uri;
 
@@ -117,5 +117,17 @@ class App implements RequestHandlerInterface
         ));
 
         return $response;
+    }
+
+    /**
+     * @return boolean
+     */
+    static public function isStaticFile(string $request_uri)
+    {
+        $path = basename(parse_url($request_uri, PHP_URL_PATH));
+        if (strpos($path, ".") !== false) {
+            return true;
+        }
+        return false;
     }
 }

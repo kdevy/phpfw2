@@ -14,6 +14,14 @@ use Framework\CallableResolverInterface;
 
 require_once "../vendor/autoload.php";
 
+/**
+ * 存在しない静的ファイルに対するリクエストの場合は、404で即時終了
+ */
+if (App::isStaticFile($_SERVER['REQUEST_URI'])) {
+    http_response_code(404);
+    exit(0);
+}
+
 // get container from setting file.
 $builder = new ContainerBuilder();
 $builder->addDefinitions('../app/config.php');

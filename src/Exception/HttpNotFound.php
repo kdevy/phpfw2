@@ -8,9 +8,6 @@
 
 namespace Framework\Exception;
 
-/**
- * フレームワークの基底例外クラス
- */
 class HttpNotFound extends FrameworkException
 {
     public function __construct($message = "", $code = 0, $previous = null)
