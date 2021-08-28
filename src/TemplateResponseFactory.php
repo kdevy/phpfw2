@@ -32,6 +32,13 @@ class TemplateResponseFactory implements ResponseFactoryInterface
     private array $contexts = [];
 
     /**
+     * @var string
+     */
+    private ?string $base_filepath = null;
+
+    const BASE_FILE_CONTEXST_KEYWORD = "MAIN_CONTENTS";
+
+    /**
      * @param ServerRequestInterface $request
      * @param array $default_contexts
      */
@@ -69,12 +76,23 @@ class TemplateResponseFactory implements ResponseFactoryInterface
     {
         $template_filepath = $this->getTemplateFilePath();
         $contents = file_get_contents($template_filepath);
+        $contexts = array_merge($this->contexts, $this->default_contexts);
 
         if ($contents === false) {
             throw new FrameworkException("Failed to get the template file contents.");
         }
+        if (isset($this->base_filepath)) {
+            \Framework\Log::debug(null, "use template base file.");
+            $base_contents = file_get_contents(TEMPLATE_DIR . DS . $this->base_filepath);
 
-        return static::assignContexts($contents, array_merge($this->contexts, $this->default_contexts));
+            if ($base_contents === false) {
+                throw new FrameworkException("Failed to get the base file contents.");
+            }
+            $contexts[self::BASE_FILE_CONTEXST_KEYWORD] = $contents;
+            $contents = static::assignContexts($base_contents, $contexts);
+        }
+
+        return static::assignContexts($contents, $contexts);
     }
 
     /**
@@ -90,6 +108,15 @@ class TemplateResponseFactory implements ResponseFactoryInterface
         $response = $response->withBody($body);
 
         return $response;
+    }
+
+    /**
+     * @param string $base_filepath
+     * @return void
+     */
+    public function use(string $base_filepath): void
+    {
+        $this->base_filepath = $base_filepath;
     }
 
     /**
