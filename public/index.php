@@ -11,6 +11,7 @@ use Framework\Log;
 use DI\ContainerBuilder;
 use Framework\CallableResolver;
 use Framework\CallableResolverInterface;
+use Framework\DBIO;
 
 require_once "../vendor/autoload.php";
 
@@ -30,6 +31,11 @@ $container = $builder->build();
 // set logging configures.
 if ($container->has("logging")) {
     Log::configure($container->get("logging"));
+}
+
+// set database configures.
+if ($container->has("database")) {
+    DBIO::configure($container->get("database"));
 }
 
 // get middlewares, default empty.
